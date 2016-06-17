@@ -3,6 +3,7 @@ var googleApi = angular.module('googleApi', []);
 googleApi.factory('googleApi', ['$http', '$log', function($http, $log) {
   this.accessToken = false;
   this.isAuthorized = false;
+  this.baseUrl = "";
 
   this.authorize = function(interactive, opt_callback) {
     try {
@@ -85,7 +86,7 @@ googleApi.factory('googleApi', ['$http', '$log', function($http, $log) {
     $log.info("About to do http request");
     var config = {
       method: method,
-      url: url,
+      url: this.baseUrl + url,
       params: params,
       headers: headers,
       data: data
