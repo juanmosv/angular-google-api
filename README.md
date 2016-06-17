@@ -34,6 +34,15 @@ chrome.runtime.onConnect.addListener(function(port) {
 });
 ```
 
+Add the following permissions to your manifest:
+
+```
+  "permissions": [
+    "identity",
+    "https://www.googleapis.com/"
+  ]
+```
+
 
 Add the googleApi angular module as a dependency.
 
