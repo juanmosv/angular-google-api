@@ -1,6 +1,6 @@
 var googleApi = angular.module('googleApi', []);
 
-googleApi.factory('googleApi', ['$http', '$log', function($http, $log) {
+googleApi.factory('googleApi', function($http, $log) {
   this.accessToken = false;
   this.isAuthorized = false;
   this.baseUrl = "";
@@ -109,4 +109,4 @@ googleApi.factory('googleApi', ['$http', '$log', function($http, $log) {
   }.bind(this);
   
   return this;
-}]);
+});
