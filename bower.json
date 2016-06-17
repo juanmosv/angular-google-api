@@ -12,5 +12,9 @@
   ],
   "ignore": [
     "example/"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/r00tat/angular-google-api.git"
+  }
 }
