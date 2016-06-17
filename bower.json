@@ -1,0 +1,16 @@
+{
+  "name": "angular-google-api",
+  "description": "Angular Module to interact with Google APIs in a Chrome extension",
+  "homepage": "https://github.com/r00tat/angular-google-api",
+  "keywords": ["Angular", "Google API", "Chrome Extension"],
+  "author": "Paul Woelfel <paul.woelfel@zirrus.eu>",
+  "dependencies": {
+    "angular": "1.x"
+  },
+  "main": [
+    "google-api.js"
+  ],
+  "ignore": [
+    "example/"
+  ]
+}
