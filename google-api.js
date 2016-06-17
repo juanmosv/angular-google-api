@@ -5,20 +5,40 @@ googleApi.factory('googleApi', function($http, $log) {
   this.isAuthorized = false;
   this.baseUrl = "";
 
-  this.authorize = function(interactive, opt_callback) {
-    try {
-      chrome.identity.getAuthToken({interactive: interactive}, function(token) {
-        if (token) {
-          this.accessToken = token;
-          this.isAuthorized = true;
-          if(typeof(opt_callback) == 'function'){
-            opt_callback();
-          }
-        }
-      }.bind(this));
-    } catch(e) {
-      $log.error(e);
+  this.authorize = function(options) {
+    // this only works in background, not in the content script
+    // try {
+    //   chrome.identity.getAuthToken({interactive: interactive}, function(token) {
+    //     if (token) {
+    //       this.accessToken = token;
+    //       this.isAuthorized = true;
+    //       if(typeof(opt_callback) == 'function'){
+    //         opt_callback();
+    //       }
+    //     }
+    //   }.bind(this));
+    // } catch(e) {
+    //   $log.error(e);
+    // }
+    if(options === undefined){
+      options = {};
     }
+    this.port = chrome.runtime.connect({name: options.port || "googleApi"});
+    this.port.onMessage.addListener(function(msg) {
+      switch (msg.type){
+        case "token":
+            // $log.info("got token", msg);
+            this.isAuthorized = msg.authorized;
+            if(msg.authorized){
+              this.setToken(msg.accessToken);
+            }
+            if(options.callback){
+              options.callback(msg.authorized, msg.accessToken);
+            }
+          break;
+      }
+    }.bind(this));
+     this.port.postMessage({type: "getToken", interactive: options.interactive === true ? true : false});
   }.bind(this);
   
   this.setToken = function(token){

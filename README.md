@@ -4,11 +4,36 @@ This module helps working with Google APIs. The [Javascript client of Google](ht
 
 ## Quickstart
 
+Setup your Chrome Extension to [work with identity](https://developer.chrome.com/apps/app_identity). 
+
 Add angular-google-api to your requirements. 
 
 ```
 bower install --save angular-google-api
 ```
+Add or extend your [background script](https://developer.chrome.com/extensions/background_pages)
+
+```
+chrome.runtime.onConnect.addListener(function(port) {
+  if (port.name == "googleApi") {
+    port.onMessage.addListener(function(msg) {
+      if (msg.type == "getToken") {
+        console.log("got token request", msg);
+        chrome.identity.getAuthToken({
+          interactive: msg.interactive ? true : false
+        }, function(token) {
+          port.postMessage({
+            type: 'token',
+            authorized: (typeof(token) !== undefined && token !== '' ? true : false),
+            accessToken: token
+          });
+        });
+      }
+    });
+  }
+});
+```
+
 
 Add the googleApi angular module as a dependency.
 
@@ -25,10 +50,12 @@ driveApp.controller('DriveController', function($scope, $log, googleApi){});
 Authorize
 
 ```
-googleApi.authorize(true, function(){
-	$log.info("authorized!")
-	$scope.getDriveItems();
-});
+    googleApi.authorize({
+      interactive: true,
+      callback: function(status, token){
+        $log.info("authenticated", status, token);
+      }
+    });
 ```
 
 Use it.
