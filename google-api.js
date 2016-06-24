@@ -123,6 +123,14 @@ googleApi.factory('googleApi', function($http, $log) {
   this.post = function(url, params, data, headers){
     return this.request('POST', url, params, data, headers);
   }.bind(this);
+
+  this.put = function(url, params, data, headers){
+    return this.request('PUT', url, params, data, headers);
+  }.bind(this);
+
+  this.patch = function(url, params, data, headers){
+    return this.request('PATCH', url, params, data, headers);
+  }.bind(this);
   
   this.delete = function(url, params, data, headers){
     return this.request('DELETE', url, params, data, headers);
